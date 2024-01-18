@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="squashBenchmark">
+  <head>
+    <meta charset="utf-8">
+    <title>COMPRESSION MASTER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.5/sandstone/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js"></script>
+    <script src="//code.highcharts.com/highcharts.js"></script>
+
+    <style type="text/css">
+
+		footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    }
+      .result-bar {
+        font-weight: bold;
+        color: black;
+        text-align: left;
+        text-shadow: 0px 0px 1px white;
+      }
+
+      .result-bar > span {
+        margin-left: 1em;
+      }
+
+      .alert a {
+        text-decoration: underline;
+      }
+
+      .bs-callout {
+        margin: 20px 0;
+        padding: 15px 30px 15px 15px;
+        border-left: 5px solid #eee;
+      }
+      .bs-callout h4 {
+        margin-top: 0;
+      }
+      .bs-callout p:last-child {
+        margin-bottom: 0;
+      }
+      .bs-callout code,
+      .bs-callout .highlight {
+        background-color: #fff;
+      }
+
+      .bs-callout-danger {
+        background-color: #fcf2f2;
+        border-color: #dFb5b4;
+      }
+      .bs-callout-warning {
+        background-color: #fefbed;
+        border-color: #f1e7bc;
+      }
+      .bs-callout-info {
+        background-color: #f0f7fd;
+        border-color: #d0e3f0;
+      }
+      .bs-callout-danger h4 {
+        color: #B94A48;
+      }
+      .bs-callout-warning h4 {
+        color: #C09853;
+      }
+      .bs-callout-info h4 {
+        color: #3A87AD;
+      }
+    </style>
+  </head>
+  <body ng-controller="SquashBenchmarkCtrl">
+    <div class="navbar navbar-default">
+		<div class="container">
+			<div class="navbar-header">
+				<a href="https://github.com/AllanDza/CompMast_DEV.git" class="navbar-brand">COMPRESSION MASTER</a>
+			</div>
+	
+			<div class="navbar-collapse collapse" id="navbar-main">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#">RECOMMENDATION BOARD</a></li>
+				</ul>
+	
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="https://github.com/AllanDza/CompMast_DEV.git"><i class="fa fa-lg fa-github"></i> GitHub</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+
+    <div class="container">
+      <div class="page-header jumbotron">
+	<h1>COMPRESSION MASTER</h1>
+    
+	<div id="results-table" class="panel panel-default">
+	  <div class="panel-heading">
+	    <div>
+	      <!-- <div class="dropdown" style="float: right"> -->
+	      <!-- 	<div id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
+	      <!-- 	  <i class="fa fa-cog fa-2x"></i> -->
+	      <!-- 	</div> -->
+	      <!-- 	<ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel"> -->
+	      <!-- 	  <li><a href="#">Compression Speed <i class="fa fa-check"></i></a></li> -->
+	      <!-- 	  <li><a href="#">Decompression Speed <i class="fa fa-check"></i></a></li> -->
+	      <!-- 	  <li><a href="#">Compression Ratio <i class="fa fa-check"></i></a></li> -->
+	      <!-- 	</ul> -->
+	      <!-- </div> -->
+		  <h2>RESULTS DASHBOARD <a href="#results"><i class="fa fa-link"></i></a></h2>
+
+	<ol>
+	  <li><a href="#ratio-vs-compression">Compression Ratio vs. Compression Speed</a></li>
+	  <li><a href="#results-table">Results Table</a></li>
+	</ol>
+
+	<div id="ratio-vs-compression" class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">Compression Ratio vs. Compression Speed <a href="#ratio-vs-compression"><i class="fa fa-link"></i></a></h3>
+	  </div>
+
+	  <div class="embed-responsive embed-responsive-16by9">
+	    <div id="ratio-compression-chart" class="embed-responsive-item panel-body"></div>
+	  </div>
+	</div>
+	      <h3 class="panel-title">Results <a href="#results-table"><i class="fa fa-link"></i></a></h3>
+	    </div>
+	  </div>
+
+          <div class="table-responsive">
+			<table class="table table-condensed table-striped">
+				<thead>
+				  <tr>
+					<!-- <th>Show</th> -->
+					<th ng-click="rawSortReverse = (rawSort == 'plugin') ? !rawSortReverse : false; rawSort = 'plugin'">
+					  Plugin
+					  <i ng-if="rawSort == 'plugin'" class="fa" ng-class="rawSortReverse ? 'fa-sort-desc' : 'fa-sort-asc'"></i>
+					</th>
+					<th ng-click="rawSortReverse = (rawSort == 'codec') ? !rawSortReverse : false; rawSort = 'codec'">
+					  Codec
+					  <i ng-if="rawSort == 'codec'" class="fa" ng-class="rawSortReverse ? 'fa-sort-desc' : 'fa-sort-asc'"></i>
+					</th>
+					<th ng-click="rawSortReverse = (rawSort == 'level') ? !rawSortReverse : false; rawSort = 'level'">
+					  Level
+					  <i ng-if="rawSort == 'level'" class="fa" ng-class="rawSortReverse ? 'fa-sort-desc' : 'fa-sort-asc'"></i>
+					</th>
+					<th ng-click="rawSortReverse = (rawSort == 'compressed_size') ? !rawSortReverse : false; rawSort = 'compressed_size'">
+					  Compression Ratio
+					  <i ng-if="rawSort == 'compressed_size'" class="fa" ng-class="rawSortReverse ? 'fa-sort-desc' : 'fa-sort-asc'"></i>
+					</th>
+					<th ng-click="rawSortReverse = (rawSort == 'compress_cpu') ? !rawSortReverse : false; rawSort = 'compress_cpu'">
+					  Compression Speed
+					  <i ng-if="rawSort == 'compress_cpu'" class="fa" ng-class="rawSortReverse ? 'fa-sort-desc' : 'fa-sort-asc'"></i>
+					</th>
+				  </tr>
+				</thead>
+			  
+				<tbody>
+				  <tr ng-repeat="result in data | orderBy:rawSort:rawSortReverse">
+					<td class="nowrap-xs" style="width: 1px; vertical-align: middle; white-space: nowrap" ng-bind="result.plugin"></td>
+					<td class="nowrap-xs" style="width: 1px; vertical-align: middle; white-space: nowrap" ng-bind="result.codec"></td>
+					<td class="nowrap-xs" style="width: 1px; vertical-align: middle; white-space: nowrap" ng-bind="result.level"></td>
+					<td ng-switch on="result.plugin">
+					  <div ng-switch-when="copy">
+						{{ result.ratio | number:2 }}
+					  </div>
+					  <div ng-switch-default class="progress" style="margin-bottom: 0">
+						<div class="progress-bar progress-bar-warning result-bar"
+						  style="white-space: nowrap; width: {{ ((result.ratio - 1) / (bestRatio - 1)) * 100 }}%">
+						  <span>{{ result.ratio | number:2 }}</span>
+						</div>
+					  </div>
+					</td>
+					<td ng-switch on="result.plugin">
+					  <div ng-switch-when="copy">
+						{{ result.compression_rate | formatSpeed }}
+					  </div>
+					  <div ng-switch-default class="progress" class="progress" style="margin-bottom: 0">
+						<div class="progress-bar progress-bar-info result-bar"
+						  style="white-space: nowrap; width: {{ (result.compression_rate / bestCompressionRate) * 100 }}%">
+						  <span>{{ result.compression_rate | formatSpeed }}</span>
+						</div>
+					  </div>
+					</td>
+				  </tr>
+				</tbody>
+			  </table>			  
+          </div>
+	</div>
+      </div>
+    </div>
+
+    <footer style="padding: 2em 0">
+      <div class="container">
+	<p>
+	  Web interface ©  AMMOGDEVS,
+	  SEE <a href="https://github.com/AllanDza/CompMast_DEV.git">COPYING</a>
+	  FOR MORE DETAILS.
+	</p>
+      </div>
+    </footer>
+
+    <script src="squash-benchmark.js"></script>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-192022-14', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>
+

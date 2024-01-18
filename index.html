@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="squashBenchmark">
+  <head>
+    <meta charset="utf-8">
+    <title>COMPRESSION MASTER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.5/sandstone/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js"></script>
+    <script src="//code.highcharts.com/highcharts.js"></script>
+
+
+    <style type="text/css">
+      header {
+        background-color: #333;
+        color: white;
+        padding: 10px;
+      }
+      .result-bar {
+        font-weight: bold;
+        color: black;
+        text-align: left;
+        text-shadow: 0px 0px 1px white;
+      }
+
+      .result-bar > span {
+        margin-left: 1em;
+      }
+
+      .alert a {
+        text-decoration: underline;
+      }
+
+      .bs-callout {
+        margin: 20px 0;
+        padding: 15px 30px 15px 15px;
+        border-left: 5px solid #eee;
+      }
+      .bs-callout h4 {
+        margin-top: 0;
+      }
+      .bs-callout p:last-child {
+        margin-bottom: 0;
+      }
+      .bs-callout code,
+      .bs-callout .highlight {
+        background-color: #fff;
+      }
+
+      .bs-callout-danger {
+        background-color: #fcf2f2;
+        border-color: #dFb5b4;
+      }
+      .bs-callout-warning {
+        background-color: #fefbed;
+        border-color: #f1e7bc;
+      }
+      .bs-callout-info {
+        background-color: #f0f7fd;
+        border-color: #d0e3f0;
+      }
+      .bs-callout-danger h4 {
+        color: #B94A48;
+      }
+      .bs-callout-warning h4 {
+        color: #C09853;
+      }
+      .bs-callout-info h4 {
+        color: #3A87AD;
+      }
+
+    footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    }
+    </style>
+  </head>
+
+  <header>
+    <center> <h1> COMPRESSION MASTER</h1></center>
+  </header>
+  <body ng-controller="SquashBenchmarkCtrl">
+    <div class="navbar navbar-default">
+		<div class="container">
+			<div class="navbar-header">
+				<a href="https://github.com/AllanDza/CompMast_DEV.git" class="navbar-brand">AMMOGDEVS</a>
+			</div>
+	
+			<div class="navbar-collapse collapse" id="navbar-main">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#">RECOMMENDATION BOARD</a></li>
+				</ul>
+	
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="https://github.com/AllanDza/CompMast_DEV.git"><i class="fa fa-lg fa-github"></i> GitHub</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+    <div class="container">
+      <div class="page-header jumbotron">
+    <section class="home-section">  
+      <p>
+          Welcome to Compression Master, your go-to tool for recommending the most suitable compression algorithms tailored
+          to your document's needs.<br>
+          We understand the importance of optimizing data transfer and have designed this tool with two primary user
+          requirements in mind: Bandwidth Utilization and Speed.
+      </p>
+
+      <h3>How It Works ?</h3>
+      <b>Bandwidth Utilization Based:</b>
+      <br>
+      <br> - Upload your document, and Compression Master analyzes its content.
+      <br> - Based on the analysis, we recommend compression algorithms that minimize bandwidth usage.
+      <br>- Implement the suggested compression technique to experience optimized data transfer.
+      <br>
+      <br>
+      <b>Compression:</b>
+      <br>
+      <br> - Upload your document, and Compression Master examines its characteristics.
+      <br> - Receive recommendations for compression algorithms tailored to enhance data transfer speed.
+      <br> - Apply the recommended compression methods to accelerate your data transfer processes.
+  </section>
+      </div>
+
+      <div class="alert alert-danger" role="alert" ng-show="false">
+      	<h2 style="margin-top: 0">Javascript Required</h2>
+
+        <p>
+          Javascript is required for this to work, and it looks like
+          you don't have it enabled.  Sorry; you can
+          still <a href="#faq-raw-data">download the CSV data</a>, but
+          the charts and tables on this page will not work unless you
+          enable Javascript.
+        </p>
+      </div>
+
+      <!-- <div class="alert alert-info" role="alert"> -->
+      <!-- 	<h2 style="margin-top: 0">Help Wanted</h2> -->
+
+      <!-- 	<p> -->
+      <!-- 	  There are a lot -->
+      <!-- 	  of <a href="https://github.com/quixdb/squash-benchmark/labels/web-site">cool -->
+      <!-- 	  things</a> someone with some interest in data visualizations -->
+      <!-- 	  and/or JavaScript could do -->
+      <!-- 	  with <a href="https://github.com/quixdb/squash-benchmark-web/tree/master/data">this -->
+      <!-- 	  data</a>, and that person isn't me!  I like dealing with the -->
+      <!-- 	  Squash library and the C side of things, but design and -->
+      <!-- 	  JavaScript just isn't fun for me. -->
+      <!-- 	</p> -->
+
+      <!-- 	<p> -->
+      <!-- 	  If you're interested in helping out (or taking over), I'd -->
+      <!-- 	  love -->
+      <!-- 	  to <a href="https://github.com/quixdb/squash-benchmark/labels/web-site">hear -->
+      <!-- 	  from you</a>.  <abbr title="For What It's Worth">FWIW</abbr> -->
+      <!-- 	  I'm not attached to the current code or libraries; feel free -->
+      <!-- 	  to throw it out and start over if you think that's best. -->
+      <!-- 	</p> -->
+      <!-- </div> -->
+
+      <div id="configuration">
+	<h1>RECOMMENDATION BOARD </h1>
+
+	<form action="result.html">
+		
+	  <h2>Choose a dataset </h2>
+
+	  <p><b>YOU CAN CHOOSE REQUIRED DOCUMENT DOWN BELOW </b></p>
+
+	  <div ng-if="random_dataset" class="bs-callout bs-callout-info">
+	    <h4>Note</h4>
+	    <p>
+	      The default dataset is selected randomly.
+	    </p>
+	  </div>
+
+          <div class="table-responsive">
+	    <table class="table table-striped">
+	      <thead>
+	        <tr>
+		  <th></th>
+		  <th ng-click="datasetSortReverse = (datasetSort == 'id') ? !datasetSortReverse : false; datasetSort = 'id'">
+		    Name
+		    <i ng-if="datasetSort == 'id'" class="fa" ng-class="datasetSortReverse ? 'fa-sort-desc' : 'fa-sort-asc'"></i>
+		  </th>
+		  <th ng-click="datasetSortReverse = (datasetSort == 'source') ? !datasetSortReverse : false; datasetSort = 'source'">
+		    Source
+		    <i ng-if="datasetSort == 'source'" class="fa" ng-class="datasetSortReverse ? 'fa-sort-desc' : 'fa-sort-asc'"></i>
+		  </th>
+		  <th ng-click="datasetSortReverse = (datasetSort == 'description') ? !datasetSortReverse : false; datasetSort = 'description'">
+		    Description
+		    <i ng-if="datasetSort == 'description'" class="fa" ng-class="datasetSortReverse ? 'fa-sort-desc' : 'fa-sort-asc'"></i>
+		  </th>
+		  <th ng-click="datasetSortReverse = (datasetSort == 'size') ? !datasetSortReverse : false; datasetSort = 'size'">
+		    Size
+		    <i ng-if="datasetSort == 'size'" class="fa" ng-class="datasetSortReverse ? 'fa-sort-desc' : 'fa-sort-asc'"></i>
+		  </th>
+	        </tr>
+	      </thead>
+	      <tbody>
+	        <tr ng-repeat="corpus in datasets | orderBy:datasetSort:datasetSortReverse">
+		  <td>
+		    <input type="radio" name="corpus" ng-value="corpus.id" ng-model="$parent.dataset" id="dataset-{{corpus.id}}">
+		  </td>
+		  <td>
+		    <label for="dataset-{{corpus.id}}" ng-bind="corpus.id"></label>
+		  </td>
+		  <td><a ng-href="{{corpus.sourceUrl}}" ng-bind="corpus.source"></a></td>
+		  <td ng-bind="corpus.description"></td>
+		  <td ng-bind="corpus.size | formatSize">}</td>
+	        </tr>
+	      </tbody>
+	    </table>
+          </div>
+
+
+	 <div>
+	  <h2 id="choose-a-machine">Choose a machine <a href="#choose-a-machine"></i></a></h2>
+	  </div>
+
+        <div class="table-responsive">
+			<div class="form-group">
+				<label for="machineSelect">Select a machine:</label>
+				<select class="form-control" id="machineSelect" ng-model="$parent.machine">
+					<option value="" disabled>Select a machine</option>
+					<option ng-repeat="system in machines" value="{{system.cpu}}">{{system.cpu}}</option>
+				</select>
+	        </div>
+      </div>
+	  <input type="submit" value="submit"> 
+	</form>
+      <div id="results">
+        <BR>
+          <BR>
+            <BR>
+              <BR>
+                <BR>
+                  <footer style="padding: 2em 0">
+                    <div class="container">
+                <p>
+                  Web interface ©  AMMOGDEVS,
+                  SEE <a href="https://github.com/AllanDza/CompMast_DEV.git">COPYING</a>
+                  FOR MORE DETAILS.
+                </p>
+                    </div>
+                  </footer>
+
+                  
+    <script src="squash-benchmark.js"></script>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-192022-14', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>
+
